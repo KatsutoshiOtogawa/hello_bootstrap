@@ -86,13 +86,14 @@ function existDate (dateInputElement) {
 /**
  * @param {HTMLInputElement} passwordInputElement ユーザーがパスワードを入力したInputElement
  * @param {HTMLInputElement} checkInputElement ユーザーがパスワードを入力したInputElement(入力確認用)
- * @returns {{ ok: (boolean | undefined), message: string}} ok: validationが成功したら、true。message: validationが失敗した場合にユーザーように表示させるメッセージ。成功した場合は空文字
+ * @returns {{ ok: (boolean | undefined), strength: ("High" | "Middle" | "Low" | "Vulnerable" | undefined), message: string}} ok: validationが成功したら、true。message: validationが失敗した場合にユーザーように表示させるメッセージ。成功した場合は空文字
  */
 function checkPassword(passwordInputElement, checkInputElement) {
     // input type がpasswordでない場合は動作未定義。
     if (passwordInputElement.type !== "password" || checkInputElement.type !== "password") {
         return {
             ok: undefined,
+            strength: undefined,
             message: "予期しないエラーです。"
         };
     }
@@ -100,27 +101,34 @@ function checkPassword(passwordInputElement, checkInputElement) {
     if (passwordInputElement.value === "" || checkInputElement.value === "") {
         return {
             ok: undefined,
+            strength: undefined,
             message: "パスワード欄が空です。"
         };
     }
-    // type=email前提。メールアドレスの形式にあっていなかったらエラー。
-    if (passwordInputElement.validity.typeMismatch) {
-        return {
-            ok: false,
-            message: "メールアドレスの形式が間違っています。"
-        };
-    }
-
     if (passwordInputElement.value !== checkInputElement.value) {
         return {
             ok: false,
-            message: "同じメールアドレスを入力してください"
+            strength: undefined,
+            message: "同じパスワードを入力してください"
         };
     }
+    // パスワードの脆弱性により、蹴るかどうか判定
+
     return {
         ok: true,
+        strength: undefined,
         message: ""
     };
+}
+
+/**
+ * 
+ * @param {string} password 
+ * @returns {"High" | "Middle" | "Low" | "Vulnerable"}
+ */
+function passwordVulnerability(password) {
+    // 半角数字大文字、アルファベット含む
+    "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{12,16})"
 }
 
 const validate = {
