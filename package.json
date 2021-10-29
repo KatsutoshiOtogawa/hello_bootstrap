@@ -1,0 +1,22 @@
+{
+  "name": "hello_bootstrap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KatsutoshiOtogawa/hello_bootstrap.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KatsutoshiOtogawa/hello_bootstrap/issues"
+  },
+  "homepage": "https://github.com/KatsutoshiOtogawa/hello_bootstrap#readme",
+  "dependencies": {
+    "validator": "^13.6.0"
+  }
+}

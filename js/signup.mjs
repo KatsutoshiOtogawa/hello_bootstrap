@@ -1,5 +1,5 @@
 //@ts-check
-import { validate } from './modules/validate.mjs';
+import { htmlValidator } from './modules/htmlvalidator.mjs';
 
 /** @type {HTMLInputElement} */
 const exampleInputEmail1 = document.querySelector("#exampleInputEmail1");
@@ -22,7 +22,7 @@ const birth_dateAlertDanger = document.querySelector('#birth_dateAlertDanger');
  */
 function checkInputEmail() {
     // フィールドの値を比較。
-    const judge = validate.emailAddress(exampleInputEmail1, exampleInputEmail2);
+    const judge = htmlValidator.emailAddress(exampleInputEmail1, exampleInputEmail2);
     // undefinedなら処理を抜ける（どちらかが空など。）。
     if (judge.ok === undefined) {
         return;
@@ -43,7 +43,7 @@ function checkInputEmail() {
  */
 function checkInputDate() {
 
-    const judge = validate.existDate(birth_date);
+    const judge = htmlValidator.existDate(birth_date);
     // undefinedなら処理を抜ける（どちらかが空など。）。
     if (judge.ok === undefined) {
         return;

@@ -1,5 +1,7 @@
 // @ts-check
 
+import validator from 'validator'
+
 /**
  * signupでログインがあっているか確認。どちらかに値が入力されていない場合は処理は未定義
  * @param {HTMLInputElement} emailInputElement ユーザーがメールアドレスを入力したInputElement
@@ -114,30 +116,45 @@ function checkPassword(passwordInputElement, checkInputElement) {
     }
     // パスワードの脆弱性により、蹴るかどうか判定
 
-    return {
-        ok: true,
-        strength: undefined,
-        message: ""
-    };
+    // 脆弱かどうか
+    const isVulneable = !validator.isStrongPassword(passwordInputElement.value);
+    if (isVulneable) {
+        return {
+            ok: false,
+            strength: "Vulnerable",
+            message: "脆弱なパスワードです。"
+        };
+    }
+    const passwordLength = passwordInputElement.value.length;
+    // 16以下だとLow。
+    if (passwordLength <= 16) {
+        return {
+            ok: true,
+            strength: "Low",
+            message: ""
+        }; 
+    } else if (passwordLength <= 20) {
+        return {
+            ok: true,
+            strength: 'Middle',
+            message: ""
+        };  
+    } else {
+        return {
+            ok: true,
+            strength: 'High',
+            message: ""
+        };  
+    }
 }
 
-/**
- * 
- * @param {string} password 
- * @returns {"High" | "Middle" | "Low" | "Vulnerable"}
- */
-function passwordVulnerability(password) {
-    // 半角数字大文字、アルファベット含む
-    "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{12,16})"
-}
-
-const validate = {
+const htmlValidator = {
     emailAddress,
     existDate,
     checkPassword
 }
 
 export {
-    validate
+    htmlValidator
 }
 
