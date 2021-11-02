@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/KatsutoshiOtogawa/hello_bootstrap#readme",
   "dependencies": {
-    "validator": "^13.6.0"
+    "@types/zxcvbn": "^4.4.1",
+    "validator": "^13.6.0",
+    "zxcvbn": "^4.4.2"
   }
 }

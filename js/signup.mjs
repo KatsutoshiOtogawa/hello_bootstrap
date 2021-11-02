@@ -11,6 +11,15 @@ const exampleInputEmail2 = document.querySelector("#exampleInputEmail2");
 const errorDiv = document.querySelector('#emailAlertDanger');
 
 /** @type {HTMLInputElement} */
+const InputPassword = document.querySelector("#InputPassword");
+
+/** @type {HTMLInputElement} */
+const checkInputPassword = document.querySelector("#checkInputPassword");
+
+/** @type {HTMLDivElement} */
+const passwordAlertDanger = document.querySelector('#passwordAlertDanger');
+
+/** @type {HTMLInputElement} */
 const birth_date = document.querySelector('#birth_date');
 
 /** @type {HTMLDivElement} */
@@ -34,6 +43,28 @@ function checkInputEmail() {
         errorDiv.textContent = judge.message;
     }else{
         errorDiv.style.display = "none";
+    }
+}
+
+/**
+ * exampleInputEmail1とexampleInputEmail2を比較し、処理を行うための関数。
+ * @returns void
+ */
+function checkPassword() {
+    // フィールドの値を比較。
+    // const judge = htmlValidator.emailAddress(exampleInputEmail1, exampleInputEmail2);
+    const judge = htmlValidator.checkPassword(InputPassword, checkInputPassword);
+    // undefinedなら処理を抜ける（どちらかが空など。）。
+    if (judge.ok === undefined) {
+        return;
+    }
+    // 同じemailAddressでないならエラーを表示させる。
+    if (!judge.ok) {
+        passwordAlertDanger.style.display = "block";
+        // ユーザー用のメッセージを設定する
+        passwordAlertDanger.textContent = judge.message;
+    }else{
+        passwordAlertDanger.style.display = "none";
     }
 }
 
@@ -65,6 +96,13 @@ exampleInputEmail2.addEventListener('blur', () => {
     checkInputEmail();
 })
 
+InputPassword.addEventListener('blur', () => {
+    checkPassword();
+})
+
+checkInputPassword.addEventListener('blur', () => {
+    checkPassword();
+})
 birth_date.addEventListener('blur', () => {
     checkInputDate();
 })

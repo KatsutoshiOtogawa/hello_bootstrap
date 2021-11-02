@@ -1,6 +1,13 @@
-// @ts-check
+// // @ts-check
 
-import validator from 'validator'
+import '//cdn.jsdelivr.net/npm/zxcvbn@4.4/dist/zxcvbn.min.js';
+
+// import validator from '//cdn.jsdelivr.net/npm/validator@13.6/validator.js';
+// import '//cdn.jsdelivr.net/npm/validator@13.6/validator.js';
+
+// import 'https://unpkg.com/validator@13.6/validator.min.js';
+
+// import validator from './validator.mjs'
 
 /**
  * signupでログインがあっているか確認。どちらかに値が入力されていない場合は処理は未定義
@@ -91,6 +98,9 @@ function existDate (dateInputElement) {
  * @returns {{ ok: (boolean | undefined), strength: ("High" | "Middle" | "Low" | "Vulnerable" | undefined), message: string}} ok: validationが成功したら、true。message: validationが失敗した場合にユーザーように表示させるメッセージ。成功した場合は空文字
  */
 function checkPassword(passwordInputElement, checkInputElement) {
+
+
+    console.log("checkpassword");
     // input type がpasswordでない場合は動作未定義。
     if (passwordInputElement.type !== "password" || checkInputElement.type !== "password") {
         return {
@@ -115,37 +125,43 @@ function checkPassword(passwordInputElement, checkInputElement) {
         };
     }
     // パスワードの脆弱性により、蹴るかどうか判定
-
-    // 脆弱かどうか
-    const isVulneable = !validator.isStrongPassword(passwordInputElement.value);
-    if (isVulneable) {
+    const result = zxcvbn(passwordInputElement.value);
+    //  * 0 too guessable: risky password. (guesses < 10^3)
+    //  * 1 very guessable: protection from throttled online attacks. (guesses < 10^6)
+    if (result.score <= 1) {
         return {
             ok: false,
             strength: "Vulnerable",
             message: "脆弱なパスワードです。"
-        };
-    }
-    const passwordLength = passwordInputElement.value.length;
-    // 16以下だとLow。
-    if (passwordLength <= 16) {
+        }; 
+    //  * 2 somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)
+    }else if (result.score = 2) {
         return {
             ok: true,
             strength: "Low",
             message: ""
-        }; 
-    } else if (passwordLength <= 20) {
+        };  
+    //  * 3 safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
+    }else if (result.score = 3) {
         return {
             ok: true,
-            strength: 'Middle',
+            strength: "Middle",
             message: ""
-        };  
-    } else {
+        };
+    //  * 4 very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
+    }else if (result.score = 4) {
         return {
             ok: true,
-            strength: 'High',
+            strength: "High",
             message: ""
-        };  
+        };
     }
+
+    return {
+        ok: false,
+        strength: undefined,
+        message: "定義されていない強さです。"
+    };
 }
 
 const htmlValidator = {

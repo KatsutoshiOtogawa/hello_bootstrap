@@ -62,13 +62,15 @@
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" class="form-control" id="InputPassword">
                 <div id="passwordHelp" class="form-text">
                   半角英字・数字を各1文字以上含む、8文字以上20文字以内
                 </div>
                 <input type="password" class="form-control" id="checkInputPassword"> 
                 <div class="form-text">
                    確認のため、もう一度入力。
+                </div>
+                <div class="alert alert-danger" role="alert" id="passwordAlertDanger" style="display: none;">
                 </div>
             </div>
             <div class="mb-3 form-check">
